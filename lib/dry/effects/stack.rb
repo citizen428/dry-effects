@@ -15,7 +15,11 @@ module Dry
 
       def call(effect)
         if effect.is_a?(Effect) && (provider = provider(effect))
-          provider.public_send(effect.name, *effect.payload)
+          if effect.keywords.empty?
+            provider.public_send(effect.name, *effect.payload)
+          else
+            provider.public_send(effect.name, *effect.payload, **effect.keywords)
+          end
         else
           yield
         end
@@ -23,8 +27,8 @@ module Dry
         Instructions::Raise.new(e)
       end
 
-      def push(provider, args)
-        provider.(self, *args) do
+      def push(provider, args, kwargs)
+        provider.(self, *args, **kwargs) do
           begin
             providers.unshift(provider)
             yield

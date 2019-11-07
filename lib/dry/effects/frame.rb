@@ -66,13 +66,13 @@ module Dry
       # @param [Array<Object>] args Handler arguments
       # @param [Proc] block Program to run
       # @api private
-      def call(args = EMPTY_ARRAY, &block)
+      def call(args = EMPTY_ARRAY, kwargs = EMPTY_HASH, &block)
         stack = Frame.stack
 
         if stack.empty?
-          stack.push(provider.dup, args) { Frame.spawn_fiber(stack, &block) }
+          stack.push(provider.dup, args, kwargs) { Frame.spawn_fiber(stack, &block) }
         else
-          stack.push(provider.dup, args, &block)
+          stack.push(provider.dup, args, kwargs, &block)
         end
       end
     end

@@ -24,7 +24,7 @@ module Dry
 
         option :type, as: :state_type, default: -> { Any }
 
-        def initialize(*)
+        def initialize(*, **)
           super
 
           @state = Undefined

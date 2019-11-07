@@ -12,8 +12,8 @@ module Dry
         @frame = Frame.new(provider)
       end
 
-      def call(*args, &block)
-        frame.(args, &block)
+      def call(*args, **kwargs, &block)
+        frame.(args, kwargs, &block)
       end
 
       def to_s
